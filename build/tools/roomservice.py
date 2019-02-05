@@ -43,10 +43,10 @@ DEBUG = False
 default_manifest = ".repo/manifest.xml"
 
 custom_local_manifest = ".repo/local_manifests/kaf_manifest.xml"
-custom_default_revision = "p9x"
+custom_default_revision = "caf-9.0"
 custom_dependencies = "kaf.dependencies"
-org_manifest = "Kaf-Seeds"  # leave empty if org is provided in manifest
-org_display = "Kaf-Seeds"  # needed for displaying
+org_manifest = "Kalil-Devices"  # leave empty if org is provided in manifest
+org_display = "Kalil-Devices"  # needed for displaying
 
 github_auth = None
 

@@ -4,4 +4,4 @@
 #
 L="log -p i -t kaf"
 
-$L "Welcome to Kaf-CAF-v`getprop ro.kaf.version` / Open Source Project based on CAF";
+$L "Welcome to Kalil-CAF-v`getprop ro.kaf.version` / Open Source Project based on CAF";

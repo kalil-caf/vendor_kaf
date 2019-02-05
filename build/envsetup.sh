@@ -1,18 +1,18 @@
-# Kaf-CAF functions that extend build/envsetup.sh
+# Kalil-CAF functions that extend build/envsetup.sh
 function __print_kaf_functions_help() {
 cat <<EOF
-Additional Kaf-CAF functions:
+Additional Kalil-CAF functions:
 - cout:            Changes directory to out.
 - mmp:             Builds all of the modules in the current directory and pushes them to the device.
 - mmap:            Builds all of the modules in the current directory and its dependencies, then pushes the package to the device.
 - mmmp:            Builds all of the modules in the supplied directories and pushes them to the device.
-- ctremote:        Add a git remote for Kaf-CAF github repository.
+- kafemote:        Add a git remote for Kalil-CAF github repository.
 - lineageremote:   Add git remote pointing to the LineageOS github repository.
 - aospremote:      Add git remote for matching AOSP repository.
 - cafremote:       Add git remote for matching CodeAurora repository.
 - mka:             Builds using SCHED_BATCH on all processors.
 - mkap:            Builds the module(s) using mka and pushes them to the device.
-- ctrmka:          Cleans and builds using mka.
+- kafmka:          Cleans and builds using mka.
 - repodiff:        Diff 2 different branches or tags within the same repo
 - repolastsync:    Prints date and time of last repo sync.
 - reposync:        Parallel repo sync using ionice and SCHED_BATCH.
@@ -22,7 +22,7 @@ Additional Kaf-CAF functions:
 EOF
 }
 
-function ctr_device_combos()
+function kaf_device_combos()
 {
     local T list_file variant device
 
@@ -59,35 +59,35 @@ function ctr_device_combos()
     done < "${list_file}"
 }
 
-function ctr_rename_function()
+function kaf_rename_function()
 {
     eval "original_kaf_$(declare -f ${1})"
 }
 
-function _ctr_build_hmm() #hidden
+function _kaf_build_hmm() #hidden
 {
     printf "%-8s %s" "${1}:" "${2}"
 }
 
-function ctr_append_hmm()
+function kaf_append_hmm()
 {
-    HMM_DESCRIPTIVE=("${HMM_DESCRIPTIVE[@]}" "$(_ctr_build_hmm "$1" "$2")")
+    HMM_DESCRIPTIVE=("${HMM_DESCRIPTIVE[@]}" "$(_kaf_build_hmm "$1" "$2")")
 }
 
-function ctr_add_hmm_entry()
+function kaf_add_hmm_entry()
 {
     for c in ${!HMM_DESCRIPTIVE[*]}
     do
         if [[ "${1}" == $(echo "${HMM_DESCRIPTIVE[$c]}" | cut -f1 -d":") ]]
         then
-            HMM_DESCRIPTIVE[${c}]="$(_ctr_build_hmm "$1" "$2")"
+            HMM_DESCRIPTIVE[${c}]="$(_kaf_build_hmm "$1" "$2")"
             return
         fi
     done
-    ctr_append_hmm "$1" "$2"
+    kaf_append_hmm "$1" "$2"
 }
 
-function ctremote()
+function kafemote()
 {
     local proj project
 
@@ -96,7 +96,7 @@ function ctremote()
         echo "Not in a git directory. Please run this from an Android repository you wish to set up."
         return
     fi
-    git remote rm ctr 2> /dev/null
+    git remote rm kaf 2> /dev/null
 
     proj="$(pwd -P | sed "s#$ANDROID_BUILD_TOP/##g")"
 
@@ -110,8 +110,8 @@ function ctremote()
     project=${project%_default*}
     fi
 
-    git remote add ctr "https://github.com/Kaf-CAF/$project"
-    echo "Remote 'ctr' created"
+    git remote add kaf "https://github.com/Kalil-CAF/$project"
+    echo "Remote 'kaf' created"
 }
 
 function lineageremote()
@@ -174,7 +174,7 @@ function cafremote()
     echo "Remote 'caf' created"
 }
 
-function ctr_push()
+function kaf_push()
 {
     local branch path_opt proj
     branch="p9x"
@@ -195,16 +195,16 @@ function ctr_push()
         proj="$proj"
     fi
 
-    git $path_opt push "https://github.com/Kaf-CAF/$proj" "HEAD:$branch"
+    git $path_opt push "https://github.com/Kalil-CAF/$proj" "HEAD:$branch"
 }
 
 
-ctr_rename_function hmm
+kaf_rename_function hmm
 function hmm() #hidden
 {
     local i T
     T="$(gettop)"
-    original_ctr_hmm
+    original_kaf_hmm
     echo
 
     echo "vendor/kaf extended functions. The complete list is:"
@@ -277,7 +277,7 @@ function breakfast()
             # A buildtype was specified, assume a full device name
             lunch $target
         else
-            # This is probably just the Kaf-CAF model name
+            # This is probably just the Kalil-CAF model name
             if [ -z "$variant" ]; then
                 variant="userdebug"
             fi
@@ -293,7 +293,7 @@ function eat()
 {
     if [ "$OUT" ] ; then
         MODVERSION=$(get_build_var KAF_VERSION)
-        ZIPFILE=Kaf-CAF-$MODVERSION.zip
+        ZIPFILE=Kalil-CAF-$MODVERSION.zip
         ZIPPATH=$OUT/$ZIPFILE
         if [ ! -f $ZIPPATH ] ; then
             echo "Nothing to eat"
@@ -551,7 +551,7 @@ function makerecipe() {
     then
         pwd
         ctemote
-        git push ctr HEAD:refs/heads/'$1'
+        git push kaf HEAD:refs/heads/'$1'
     fi
     '
 }
@@ -568,7 +568,7 @@ function mka() {
     m -j "$@"
 }
 
-function ctrmka() {
+function kafmka() {
     if [ ! -z "$1" ]; then
         for i in "$@"; do
             case $i in
@@ -759,7 +759,7 @@ alias mmp='dopush mm'
 alias mmmp='dopush mmm'
 alias mmap='dopush mma'
 alias mkap='dopush mka'
-alias ctrkap='dopush ctrmka'
+alias kafkap='dopush kafmka'
 
 function repopick() {
     T=$(gettop)

@@ -15,11 +15,10 @@
 
 # -----------------------------------------------------------------
 
-# Kaf-CAF OTA update package
+# Kalil-CAF OTA update package
 KAF_TARGET_PACKAGE := $(PRODUCT_OUT)/$(KAF_MOD_VERSION).zip
 
 .PHONY: bacon
-lemonade: bacon
 bacon: $(INTERNAL_OTA_PACKAGE_TARGET)
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(KAF_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(KAF_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(KAF_TARGET_PACKAGE).md5sum

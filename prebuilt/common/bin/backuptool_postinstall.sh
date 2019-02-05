@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #
-# Kaf-CAF A/B OTA Postinstall Script
+# Kalil-CAF A/B OTA Postinstall Script
 #
 
 /postinstall/system/bin/backuptool_ab.sh backup
