@@ -18,10 +18,6 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 # RecueParty? No thanks.
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.enable_rescue=false
 
-# Show SELinux status on About Settings
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.build.selinux=1
-
 # Mark as eligible for Google Assistant
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.opa.eligible_device=true
 
@@ -30,8 +26,8 @@ ifneq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.dun.override=0
 endif
 
-# enable ADB authentication if not on eng build
-ifeq ($(TARGET_BUILD_VARIANT),eng)
+# disable ADB authentication if not on user build
+ifneq ($(TARGET_BUILD_VARIANT),user)
 # Disable ADB authentication
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=0
 else
@@ -70,52 +66,13 @@ PRODUCT_COPY_FILES += \
     vendor/kaf/prebuilt/common/bin/backuptool_postinstall.sh:system/bin/backuptool_postinstall.sh
 endif
 
-# Include low res bootanimation if display is less then 720p
-TARGET_BOOTANIMATION_480 := $(shell \
-  if [ $(TARGET_SCREEN_WIDTH) -lt 720 ]; then \
-    echo 'true'; \
-  else \
-    echo ''; \
-  fi )
-
-# Include high res bootanimation if display is greater then 1080p
-TARGET_BOOTANIMATION_1440 := $(shell \
-  if [ $(TARGET_SCREEN_WIDTH) -gt 1080 ]; then \
-    echo 'true'; \
-  else \
-    echo ''; \
-  fi )
-
-# Bootanimation
-#qHD
-ifeq ($(TARGET_BOOTANIMATION_480), true)
-PRODUCT_COPY_FILES += \
-    vendor/kaf/prebuilt/common/bootanimation/480.zip:system/media/bootanimation.zip
-else
-#HD
-ifeq ($(TARGET_SCREEN_WIDTH), 720)
-PRODUCT_COPY_FILES += \
-    vendor/kaf/prebuilt/common/bootanimation/720.zip:system/media/bootanimation.zip
-else
-#QHD
-ifeq ($(TARGET_BOOTANIMATION_1440), true)
-PRODUCT_COPY_FILES += \
-    vendor/kaf/prebuilt/common/bootanimation/1440.zip:system/media/bootanimation.zip
-else
-#FHD
-PRODUCT_COPY_FILES += \
-    vendor/kaf/prebuilt/common/bootanimation/1080.zip:system/media/bootanimation.zip
-endif
-endif
-endif
-
 # Changelog
-ifeq ($(KAF_RELEASE),true)
-PRODUCT_COPY_FILES +=  \
-    vendor/kaf/prebuilt/common/etc/Changelog.txt:system/etc/Changelog.txt
-else
+#ifeq ($(KAF_RELEASE),true)
+#PRODUCT_COPY_FILES +=  \
+#    vendor/kaf/prebuilt/common/etc/Changelog.txt:system/etc/Changelog.txt
+#else
 GENERATE_CHANGELOG := true
-endif
+#endif
 
 # Dialer fix
 PRODUCT_COPY_FILES +=  \
@@ -193,14 +150,6 @@ PRODUCT_PACKAGES += \
     libprotobuf-cpp-full \
     librsjni
 
-# Themes
-PRODUCT_PACKAGES += \
-    Margarita
-
-# Substratum
-#PRODUCT_PACKAGES += SubstratumService
-#PRODUCT_SYSTEM_SERVER_APPS += SubstratumService
-
 # World APN list
 PRODUCT_COPY_FILES += \
     vendor/kaf/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
@@ -231,10 +180,9 @@ endif
 # include definitions for SDCLANG
 include vendor/kaf/build/sdclang/sdclang.mk
 
-# Kaf-CAF versions.
-CAF_REVISION := LA.UM.7.3.r1-06600-sdm845.0
-KAF_VERSION_FLAVOUR = KeyLime
-KAF_VERSION_CODENAME := 5.0
+# Kaf versions.
+CAF_REVISION := $(shell sed '5q;d' .repo/manifest.xml | sed 's/.*tags\/\(.*\)".*/\1/')
+KAF_VERSION_CODENAME := 1.1
 PLATFORM_VERSION_FLAVOUR := Pie
 
 ifndef KAF_BUILD_TYPE
@@ -252,9 +200,9 @@ ifdef KAF_BUILD_EXTRA
 endif
 
 # Set all versions
-KAF_VERSION := KafCAF-v$(KAF_VERSION_CODENAME)-$(KAF_VERSION_FLAVOUR)-$(PLATFORM_VERSION_FLAVOUR)-$(KAF_BUILD_TYPE)$(KAF_POSTFIX)
-KAF_MOD_VERSION := KafCAF-v$(KAF_VERSION_CODENAME)-$(KAF_VERSION_FLAVOUR)-$(PLATFORM_VERSION_FLAVOUR)-$(KAF_BUILD)-$(KAF_BUILD_TYPE)$(KAF_POSTFIX)
-CUSTOM_FINGERPRINT := Kaf-CAF/$(PLATFORM_VERSION)/$(KAF_VERSION_CODENAME)-$(KAF_VERSION_FLAVOUR)/$(TARGET_PRODUCT)/$(shell date +%Y%m%d-%H:%M)
+KAF_VERSION := KafC-v$(KAF_VERSION_CODENAME)-$(PLATFORM_VERSION_FLAVOUR)-$(KAF_BUILD_TYPE)$(KAF_POSTFIX)
+KAF_MOD_VERSION := Kaf-v$(KAF_VERSION_CODENAME)-$(PLATFORM_VERSION_FLAVOUR)-$(KAF_BUILD)-$(KAF_BUILD_TYPE)$(KAF_POSTFIX)
+CUSTOM_FINGERPRINT := Kaf/$(PLATFORM_VERSION)/$(KAF_VERSION_CODENAME)/$(TARGET_PRODUCT)/$(shell date +%Y%m%d-%H:%M)
 
 # Kaf Bloats
 PRODUCT_PACKAGES += \
@@ -262,23 +210,10 @@ PRODUCT_PACKAGES += \
     Launcher3 \
     LatinIME \
     LiveWallpapersPicker \
-    AboutKaf \
     SnapdragonGallery \
     MusicFX \
-    KafHeaders \
     Calendar \
     FirefoxLite
-
-# DU Utils Library
-#PRODUCT_PACKAGES += \
-    org.dirtyunicorns.utils
-
-#PRODUCT_BOOT_JARS += \
-    org.dirtyunicorns.utils
-
-PRODUCT_PACKAGES += \
-   OmniJaws \
-   OmniStyle
 
 # TCP Connection Management
 PRODUCT_PACKAGES += tcmiface
