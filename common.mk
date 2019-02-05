@@ -58,16 +58,16 @@ endif
 
 # Backup Tool
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
-    vendor/citrus/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions \
-    vendor/citrus/prebuilt/common/bin/blacklist:system/addon.d/blacklist \
-    vendor/citrus/prebuilt/common/bin/whitelist:system/addon.d/whitelist \
+    vendor/kaf/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
+    vendor/kaf/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions \
+    vendor/kaf/prebuilt/common/bin/blacklist:system/addon.d/blacklist \
+    vendor/kaf/prebuilt/common/bin/whitelist:system/addon.d/whitelist \
 
 ifeq ($(AB_OTA_UPDATER),true)
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/bin/backuptool_ab.sh:system/bin/backuptool_ab.sh \
-    vendor/citrus/prebuilt/common/bin/backuptool_ab.functions:system/bin/backuptool_ab.functions \
-    vendor/citrus/prebuilt/common/bin/backuptool_postinstall.sh:system/bin/backuptool_postinstall.sh
+    vendor/kaf/prebuilt/common/bin/backuptool_ab.sh:system/bin/backuptool_ab.sh \
+    vendor/kaf/prebuilt/common/bin/backuptool_ab.functions:system/bin/backuptool_ab.functions \
+    vendor/kaf/prebuilt/common/bin/backuptool_postinstall.sh:system/bin/backuptool_postinstall.sh
 endif
 
 # Include low res bootanimation if display is less then 720p
@@ -90,51 +90,51 @@ TARGET_BOOTANIMATION_1440 := $(shell \
 #qHD
 ifeq ($(TARGET_BOOTANIMATION_480), true)
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/bootanimation/480.zip:system/media/bootanimation.zip
+    vendor/kaf/prebuilt/common/bootanimation/480.zip:system/media/bootanimation.zip
 else
 #HD
 ifeq ($(TARGET_SCREEN_WIDTH), 720)
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/bootanimation/720.zip:system/media/bootanimation.zip
+    vendor/kaf/prebuilt/common/bootanimation/720.zip:system/media/bootanimation.zip
 else
 #QHD
 ifeq ($(TARGET_BOOTANIMATION_1440), true)
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/bootanimation/1440.zip:system/media/bootanimation.zip
+    vendor/kaf/prebuilt/common/bootanimation/1440.zip:system/media/bootanimation.zip
 else
 #FHD
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/bootanimation/1080.zip:system/media/bootanimation.zip
+    vendor/kaf/prebuilt/common/bootanimation/1080.zip:system/media/bootanimation.zip
 endif
 endif
 endif
 
 # Changelog
-ifeq ($(CITRUS_RELEASE),true)
+ifeq ($(KAF_RELEASE),true)
 PRODUCT_COPY_FILES +=  \
-    vendor/citrus/prebuilt/common/etc/Changelog.txt:system/etc/Changelog.txt
+    vendor/kaf/prebuilt/common/etc/Changelog.txt:system/etc/Changelog.txt
 else
 GENERATE_CHANGELOG := true
 endif
 
 # Dialer fix
 PRODUCT_COPY_FILES +=  \
-    vendor/citrus/prebuilt/common/etc/sysconfig/dialer_experience.xml:system/etc/sysconfig/dialer_experience.xml
+    vendor/kaf/prebuilt/common/etc/sysconfig/dialer_experience.xml:system/etc/sysconfig/dialer_experience.xml
 
 # init.d support
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/bin/sysinit:system/bin/sysinit \
-    vendor/citrus/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
-    vendor/citrus/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit
+    vendor/kaf/prebuilt/common/bin/sysinit:system/bin/sysinit \
+    vendor/kaf/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
+    vendor/kaf/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit
 
-# Copy all Citrus-specific init rc files
-$(foreach f,$(wildcard vendor/citrus/prebuilt/common/etc/init/*.rc),\
+# Copy all Kaf-specific init rc files
+$(foreach f,$(wildcard vendor/kaf/prebuilt/common/etc/init/*.rc),\
 	$(eval PRODUCT_COPY_FILES += $(f):system/etc/init/$(notdir $f)))
 
 # Bring in camera effects
 PRODUCT_COPY_FILES +=  \
-    vendor/citrus/prebuilt/common/media/LMprec_508.emd:system/media/LMprec_508.emd \
-    vendor/citrus/prebuilt/common/media/PFFprec_600.emd:system/media/PFFprec_600.emd
+    vendor/kaf/prebuilt/common/media/LMprec_508.emd:system/media/LMprec_508.emd \
+    vendor/kaf/prebuilt/common/media/PFFprec_600.emd:system/media/PFFprec_600.emd
 
 # Enable SIP+VoIP on all targets
 PRODUCT_COPY_FILES += \
@@ -203,69 +203,69 @@ PRODUCT_PACKAGES += \
 
 # World APN list
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
+    vendor/kaf/prebuilt/common/etc/apns-conf.xml:system/etc/apns-conf.xml
 
 # Overlays
-PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/citrus/overlay/common
-DEVICE_PACKAGE_OVERLAYS += vendor/citrus/overlay/common
+PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/kaf/overlay/common
+DEVICE_PACKAGE_OVERLAYS += vendor/kaf/overlay/common
 
 # Proprietary latinime libs needed for Keyboard swyping
 ifneq ($(filter arm64,$(TARGET_ARCH)),)
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/lib/libjni_latinime.so:system/lib/libjni_latinime.so \
-    vendor/citrus/prebuilt/common/lib/libjni_latinimegoogle.so:system/lib/libjni_latinimegoogle.so
+    vendor/kaf/prebuilt/common/lib/libjni_latinime.so:system/lib/libjni_latinime.so \
+    vendor/kaf/prebuilt/common/lib/libjni_latinimegoogle.so:system/lib/libjni_latinimegoogle.so
 else
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/lib64/libjni_latinime.so:system/lib64/libjni_latinime.so \
-    vendor/citrus/prebuilt/common/lib64/libjni_latinimegoogle.so:system/lib64/libjni_latinimegoogle.so
+    vendor/kaf/prebuilt/common/lib64/libjni_latinime.so:system/lib64/libjni_latinime.so \
+    vendor/kaf/prebuilt/common/lib64/libjni_latinimegoogle.so:system/lib64/libjni_latinimegoogle.so
 endif
 
 # include sounds from pixel
-$(call inherit-product-if-exists, vendor/citrus/google/sounds/PixelSounds.mk)
+$(call inherit-product-if-exists, vendor/kaf/google/sounds/PixelSounds.mk)
 
 # build official builds with private keys
-ifeq ($(CITRUS_RELEASE),true)
-include vendor/citrus-priv/keys.mk
+ifeq ($(KAF_RELEASE),true)
+include vendor/kaf-priv/keys.mk
 endif
 
 # include definitions for SDCLANG
-include vendor/citrus/build/sdclang/sdclang.mk
+include vendor/kaf/build/sdclang/sdclang.mk
 
-# Citrus-CAF versions.
+# Kaf-CAF versions.
 CAF_REVISION := LA.UM.7.3.r1-06600-sdm845.0
-CITRUS_VERSION_FLAVOUR = KeyLime
-CITRUS_VERSION_CODENAME := 5.0
+KAF_VERSION_FLAVOUR = KeyLime
+KAF_VERSION_CODENAME := 5.0
 PLATFORM_VERSION_FLAVOUR := Pie
 
-ifndef CITRUS_BUILD_TYPE
-ifeq ($(CITRUS_RELEASE),true)
-    CITRUS_BUILD_TYPE := RELEASE
-    CITRUS_POSTFIX := -$(shell date +"%Y%m%d")
+ifndef KAF_BUILD_TYPE
+ifeq ($(KAF_RELEASE),true)
+    KAF_BUILD_TYPE := RELEASE
+    KAF_POSTFIX := -$(shell date +"%Y%m%d")
 else
-    CITRUS_BUILD_TYPE := COMMUNITY
-    CITRUS_POSTFIX := -$(shell date +"%Y%m%d-%H%M")
+    KAF_BUILD_TYPE := COMMUNITY
+    KAF_POSTFIX := -$(shell date +"%Y%m%d-%H%M")
 endif
 endif
 
-ifdef CITRUS_BUILD_EXTRA
-    CITRUS_POSTFIX := -$(CITRUS_BUILD_EXTRA)
+ifdef KAF_BUILD_EXTRA
+    KAF_POSTFIX := -$(KAF_BUILD_EXTRA)
 endif
 
 # Set all versions
-CITRUS_VERSION := CitrusCAF-v$(CITRUS_VERSION_CODENAME)-$(CITRUS_VERSION_FLAVOUR)-$(PLATFORM_VERSION_FLAVOUR)-$(CITRUS_BUILD_TYPE)$(CITRUS_POSTFIX)
-CITRUS_MOD_VERSION := CitrusCAF-v$(CITRUS_VERSION_CODENAME)-$(CITRUS_VERSION_FLAVOUR)-$(PLATFORM_VERSION_FLAVOUR)-$(CITRUS_BUILD)-$(CITRUS_BUILD_TYPE)$(CITRUS_POSTFIX)
-CUSTOM_FINGERPRINT := Citrus-CAF/$(PLATFORM_VERSION)/$(CITRUS_VERSION_CODENAME)-$(CITRUS_VERSION_FLAVOUR)/$(TARGET_PRODUCT)/$(shell date +%Y%m%d-%H:%M)
+KAF_VERSION := KafCAF-v$(KAF_VERSION_CODENAME)-$(KAF_VERSION_FLAVOUR)-$(PLATFORM_VERSION_FLAVOUR)-$(KAF_BUILD_TYPE)$(KAF_POSTFIX)
+KAF_MOD_VERSION := KafCAF-v$(KAF_VERSION_CODENAME)-$(KAF_VERSION_FLAVOUR)-$(PLATFORM_VERSION_FLAVOUR)-$(KAF_BUILD)-$(KAF_BUILD_TYPE)$(KAF_POSTFIX)
+CUSTOM_FINGERPRINT := Kaf-CAF/$(PLATFORM_VERSION)/$(KAF_VERSION_CODENAME)-$(KAF_VERSION_FLAVOUR)/$(TARGET_PRODUCT)/$(shell date +%Y%m%d-%H:%M)
 
-# Citrus Bloats
+# Kaf Bloats
 PRODUCT_PACKAGES += \
     Camera2 \
     Launcher3 \
     LatinIME \
     LiveWallpapersPicker \
-    AboutCitrus \
+    AboutKaf \
     SnapdragonGallery \
     MusicFX \
-    CitrusHeaders \
+    KafHeaders \
     Calendar \
     FirefoxLite
 
@@ -287,5 +287,5 @@ PRODUCT_BOOT_JARS += tcmiface
 # Turbo
 PRODUCT_PACKAGES += Turbo
 PRODUCT_COPY_FILES += \
-    vendor/citrus/prebuilt/common/etc/permissions/privapp-permissions-turbo.xml:system/etc/permissions/privapp-permissions-turbo.xml \
-    vendor/citrus/prebuilt/common/etc/sysconfig/turbo-sysconfig.xml:system/etc/sysconfig/turbo-sysconfig.xml
+    vendor/kaf/prebuilt/common/etc/permissions/privapp-permissions-turbo.xml:system/etc/permissions/privapp-permissions-turbo.xml \
+    vendor/kaf/prebuilt/common/etc/sysconfig/turbo-sysconfig.xml:system/etc/sysconfig/turbo-sysconfig.xml

@@ -1,12 +1,12 @@
-# Citrus-CAF functions that extend build/envsetup.sh
-function __print_citrus_functions_help() {
+# Kaf-CAF functions that extend build/envsetup.sh
+function __print_kaf_functions_help() {
 cat <<EOF
-Additional Citrus-CAF functions:
+Additional Kaf-CAF functions:
 - cout:            Changes directory to out.
 - mmp:             Builds all of the modules in the current directory and pushes them to the device.
 - mmap:            Builds all of the modules in the current directory and its dependencies, then pushes the package to the device.
 - mmmp:            Builds all of the modules in the supplied directories and pushes them to the device.
-- ctremote:        Add a git remote for Citrus-CAF github repository.
+- ctremote:        Add a git remote for Kaf-CAF github repository.
 - lineageremote:   Add git remote pointing to the LineageOS github repository.
 - aospremote:      Add git remote for matching AOSP repository.
 - cafremote:       Add git remote for matching CodeAurora repository.
@@ -27,7 +27,7 @@ function ctr_device_combos()
     local T list_file variant device
 
     T="$(gettop)"
-    list_file="${T}/vendor/citrus/citrus.devices"
+    list_file="${T}/vendor/kaf/kaf.devices"
     variant="userdebug"
 
     if [[ $1 ]]
@@ -49,19 +49,19 @@ function ctr_device_combos()
     if [[ ! -f "${list_file}" ]]
     then
         echo "unable to find device list: ${list_file}"
-        list_file="${T}/vendor/citrus/citrus.devices"
+        list_file="${T}/vendor/kaf/kaf.devices"
         echo "defaulting device list file to: ${list_file}"
     fi
 
     while IFS= read -r device
     do
-        add_lunch_combo "citrus_${device}-${variant}"
+        add_lunch_combo "kaf_${device}-${variant}"
     done < "${list_file}"
 }
 
 function ctr_rename_function()
 {
-    eval "original_citrus_$(declare -f ${1})"
+    eval "original_kaf_$(declare -f ${1})"
 }
 
 function _ctr_build_hmm() #hidden
@@ -110,7 +110,7 @@ function ctremote()
     project=${project%_default*}
     fi
 
-    git remote add ctr "https://github.com/Citrus-CAF/$project"
+    git remote add ctr "https://github.com/Kaf-CAF/$project"
     echo "Remote 'ctr' created"
 }
 
@@ -195,7 +195,7 @@ function ctr_push()
         proj="$proj"
     fi
 
-    git $path_opt push "https://github.com/Citrus-CAF/$proj" "HEAD:$branch"
+    git $path_opt push "https://github.com/Kaf-CAF/$proj" "HEAD:$branch"
 }
 
 
@@ -207,8 +207,8 @@ function hmm() #hidden
     original_ctr_hmm
     echo
 
-    echo "vendor/citrus extended functions. The complete list is:"
-    for i in $(grep -P '^function .*$' "$T/vendor/citrus/build/envsetup.sh" | grep -v "#hidden" | sed 's/function \([a-z_]*\).*/\1/' | sort | uniq); do
+    echo "vendor/kaf extended functions. The complete list is:"
+    for i in $(grep -P '^function .*$' "$T/vendor/kaf/build/envsetup.sh" | grep -v "#hidden" | sed 's/function \([a-z_]*\).*/\1/' | sort | uniq); do
         echo "$i"
     done |column
 }
@@ -258,10 +258,10 @@ function breakfast()
 {
     target=$1
     local variant=$2
-    CITRUS_DEVICES_ONLY="true"
+    KAF_DEVICES_ONLY="true"
     unset LUNCH_MENU_CHOICES
     add_lunch_combo full-eng
-    for f in `/bin/ls vendor/citrus/build/vendorsetup.sh 2> /dev/null`
+    for f in `/bin/ls vendor/kaf/build/vendorsetup.sh 2> /dev/null`
         do
             echo "including $f"
             . $f
@@ -277,11 +277,11 @@ function breakfast()
             # A buildtype was specified, assume a full device name
             lunch $target
         else
-            # This is probably just the Citrus-CAF model name
+            # This is probably just the Kaf-CAF model name
             if [ -z "$variant" ]; then
                 variant="userdebug"
             fi
-            lunch citrus_$target-$variant
+            lunch kaf_$target-$variant
         fi
     fi
     return $?
@@ -292,8 +292,8 @@ alias bib=breakfast
 function eat()
 {
     if [ "$OUT" ] ; then
-        MODVERSION=$(get_build_var CITRUS_VERSION)
-        ZIPFILE=Citrus-CAF-$MODVERSION.zip
+        MODVERSION=$(get_build_var KAF_VERSION)
+        ZIPFILE=Kaf-CAF-$MODVERSION.zip
         ZIPPATH=$OUT/$ZIPFILE
         if [ ! -f $ZIPPATH ] ; then
             echo "Nothing to eat"
@@ -308,7 +308,7 @@ function eat()
             done
             echo "Device Found.."
         fi
-    if (adb shell getprop ro.citrus.device | grep -q "$CITRUS_BUILD");
+    if (adb shell getprop ro.kaf.device | grep -q "$KAF_BUILD");
     then
         # if adbd isn't root we can't write to /cache/recovery/
         adb root
@@ -330,7 +330,7 @@ EOF
     fi
     return $?
     else
-        echo "The connected device does not appear to be $CITRUS_BUILD, run away!"
+        echo "The connected device does not appear to be $KAF_BUILD, run away!"
     fi
 }
 
@@ -479,7 +479,7 @@ function installboot()
     sleep 1
     adb wait-for-online shell mount /system 2>&1 > /dev/null
     adb wait-for-online remount
-    if (adb shell getprop ro.citrus.device | grep -q "$CITRUS_BUILD");
+    if (adb shell getprop ro.kaf.device | grep -q "$KAF_BUILD");
     then
         adb push $OUT/boot.img /cache/
         for i in $OUT/system/lib/modules/*;
@@ -490,7 +490,7 @@ function installboot()
         adb shell chmod 644 /system/lib/modules/*
         echo "Installation complete."
     else
-        echo "The connected device does not appear to be $CITRUS_BUILD, run away!"
+        echo "The connected device does not appear to be $KAF_BUILD, run away!"
     fi
 }
 
@@ -524,13 +524,13 @@ function installrecovery()
     sleep 1
     adb wait-for-online shell mount /system 2>&1 >> /dev/null
     adb wait-for-online remount
-    if (adb shell getprop ro.citrus.device | grep -q "$CITRUS_BUILD");
+    if (adb shell getprop ro.kaf.device | grep -q "$KAF_BUILD");
     then
         adb push $OUT/recovery.img /cache/
         adb shell dd if=/cache/recovery.img of=$PARTITION
         echo "Installation complete."
     else
-        echo "The connected device does not appear to be $CITRUS_BUILD, run away!"
+        echo "The connected device does not appear to be $KAF_BUILD, run away!"
     fi
 }
 
@@ -636,7 +636,7 @@ function dopush()
         echo "Device Found."
     fi
 
-    if (adb shell getprop ro.citrus.device | grep -q "$CITRUS_BUILD") || [ "$FORCE_PUSH" = "true" ];
+    if (adb shell getprop ro.kaf.device | grep -q "$KAF_BUILD") || [ "$FORCE_PUSH" = "true" ];
     then
     # retrieve IP and PORT info if we're using a TCP connection
     TCPIPPORT=$(adb devices \
@@ -751,7 +751,7 @@ EOF
     fi
     return 0
     else
-        echo "The connected device does not appear to be $CITRUS_BUILD, run away!"
+        echo "The connected device does not appear to be $KAF_BUILD, run away!"
     fi
 }
 
@@ -763,13 +763,13 @@ alias ctrkap='dopush ctrmka'
 
 function repopick() {
     T=$(gettop)
-    $T/vendor/citrus/build/tools/repopick.py $@
+    $T/vendor/kaf/build/tools/repopick.py $@
 }
 
 function fixup_common_out_dir() {
     common_out_dir=$(get_build_var OUT_DIR)/target/common
     target_device=$(get_build_var TARGET_DEVICE)
-    if [ ! -z $CITRUS_FIXUP_COMMON_OUT ]; then
+    if [ ! -z $KAF_FIXUP_COMMON_OUT ]; then
         if [ -d ${common_out_dir} ] && [ ! -L ${common_out_dir} ]; then
             mv ${common_out_dir} ${common_out_dir}-${target_device}
             ln -s ${common_out_dir}-${target_device} ${common_out_dir}
@@ -790,6 +790,6 @@ if [ -n "$JACK_SERVER_VM_ARGUMENTS" ] && [ -z "$ANDROID_JACK_VM_ARGS" ]; then
 fi
 
 # SDClang Environment Variables
-export SDCLANG_AE_CONFIG=vendor/citrus/build/sdclang/sdclangAE.json
-export SDCLANG_CONFIG=vendor/citrus/build/sdclang/sdclang.json
+export SDCLANG_AE_CONFIG=vendor/kaf/build/sdclang/sdclangAE.json
+export SDCLANG_CONFIG=vendor/kaf/build/sdclang/sdclang.json
 export SDCLANG_SA_ENABLED=false

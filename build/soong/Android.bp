@@ -1,14 +1,14 @@
 bootstrap_go_package {
-    name: "soong-citrus",
-    pkgPath: "citrus/soong/android",
+    name: "soong-kaf",
+    pkgPath: "kaf/soong/android",
     srcs: [
         "android/variable.go",
     ],
 }
 
 bootstrap_go_package {
-    name: "soong-citrus-generator",
-    pkgPath: "citrus/soong/generator",
+    name: "soong-kaf-generator",
+    pkgPath: "kaf/soong/generator",
     deps: [
         "blueprint",
         "blueprint-pathtools",
@@ -23,7 +23,7 @@ bootstrap_go_package {
     pluginFor: ["soong_build"],
 }
 
-citrus_generator {
+kaf_generator {
     name: "generated_kernel_includes",
 
     // The headers make command

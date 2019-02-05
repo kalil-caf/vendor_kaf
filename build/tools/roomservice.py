@@ -42,11 +42,11 @@ except ImportError:
 DEBUG = False
 default_manifest = ".repo/manifest.xml"
 
-custom_local_manifest = ".repo/local_manifests/citrus_manifest.xml"
+custom_local_manifest = ".repo/local_manifests/kaf_manifest.xml"
 custom_default_revision = "p9x"
-custom_dependencies = "citrus.dependencies"
-org_manifest = "Citrus-Seeds"  # leave empty if org is provided in manifest
-org_display = "Citrus-Seeds"  # needed for displaying
+custom_dependencies = "kaf.dependencies"
+org_manifest = "Kaf-Seeds"  # leave empty if org is provided in manifest
+org_display = "Kaf-Seeds"  # needed for displaying
 
 github_auth = None
 

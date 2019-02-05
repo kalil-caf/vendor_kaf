@@ -1,2 +1,2 @@
-# Include Citrus-CAF build properties
-include vendor/citrus/build/core/main_version.mk
+# Include Kaf-CAF build properties
+include vendor/kaf/build/core/main_version.mk

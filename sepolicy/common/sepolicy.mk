@@ -4,10 +4,10 @@
 #
 
 BOARD_PLAT_PUBLIC_SEPOLICY_DIR += \
-    vendor/citrus/sepolicy/common/public
+    vendor/kaf/sepolicy/common/public
 
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += \
-    vendor/citrus/sepolicy/common/private
+    vendor/kaf/sepolicy/common/private
 
 BOARD_SEPOLICY_DIRS += \
-    vendor/citrus/sepolicy/common/vendor
+    vendor/kaf/sepolicy/common/vendor

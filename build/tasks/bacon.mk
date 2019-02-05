@@ -15,17 +15,17 @@
 
 # -----------------------------------------------------------------
 
-# Citrus-CAF OTA update package
-CITRUS_TARGET_PACKAGE := $(PRODUCT_OUT)/$(CITRUS_MOD_VERSION).zip
+# Kaf-CAF OTA update package
+KAF_TARGET_PACKAGE := $(PRODUCT_OUT)/$(KAF_MOD_VERSION).zip
 
 .PHONY: bacon
 lemonade: bacon
 bacon: $(INTERNAL_OTA_PACKAGE_TARGET)
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CITRUS_TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(CITRUS_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(CITRUS_TARGET_PACKAGE).md5sum
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(KAF_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(KAF_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(KAF_TARGET_PACKAGE).md5sum
 	@echo "done"
 	@echo "===============================-Package complete-============================================================="
-	@echo "Zip: $(CITRUS_TARGET_PACKAGE)"
-	@echo "MD5: `cat $(CITRUS_TARGET_PACKAGE).md5sum | awk '{print $$1}' `"
-	@echo "Size: `du -sh $(CITRUS_TARGET_PACKAGE) | awk '{print $$1}' `"
+	@echo "Zip: $(KAF_TARGET_PACKAGE)"
+	@echo "MD5: `cat $(KAF_TARGET_PACKAGE).md5sum | awk '{print $$1}' `"
+	@echo "Size: `du -sh $(KAF_TARGET_PACKAGE) | awk '{print $$1}' `"
 	@echo "=============================================================================================================="

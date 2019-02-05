@@ -29,7 +29,7 @@ import (
 )
 
 func init() {
-	android.RegisterModuleType("citrus_generator", GeneratorFactory)
+	android.RegisterModuleType("kaf_generator", GeneratorFactory)
 
 	pctx.HostBinToolVariable("sboxCmd", "sbox")
 }
@@ -214,12 +214,12 @@ func (g *Module) GenerateAndroidBuildActions(ctx android.ModuleContext) {
 	if depRoot == "" {
 		depRoot = ctx.ModuleDir()
 	} else {
-		depRoot = citrusExpandVariables(ctx, depRoot)
+		depRoot = kafExpandVariables(ctx, depRoot)
 	}
 
 	// Glob dep_files property
 	for _, dep_file := range g.properties.Dep_files {
-		dep_file = citrusExpandVariables(ctx, dep_file)
+		dep_file = kafExpandVariables(ctx, dep_file)
 		globPath := filepath.Join(depRoot, dep_file)
 		paths, err := ctx.GlobWithDeps(globPath, nil)
 		if err != nil {
@@ -231,7 +231,7 @@ func (g *Module) GenerateAndroidBuildActions(ctx android.ModuleContext) {
 		}
 	}
 
-	cmd := citrusExpandVariables(ctx, String(g.properties.Cmd))
+	cmd := kafExpandVariables(ctx, String(g.properties.Cmd))
 
 	rawCommand, err := android.Expand(cmd, func(name string) (string, error) {
 		switch name {

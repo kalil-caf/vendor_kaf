@@ -2,6 +2,6 @@
 #
 # Print startup info
 #
-L="log -p i -t citrus"
+L="log -p i -t kaf"
 
-$L "Welcome to Citrus-CAF-v`getprop ro.citrus.version` / Open Source Project based on CAF";
+$L "Welcome to Kaf-CAF-v`getprop ro.kaf.version` / Open Source Project based on CAF";
