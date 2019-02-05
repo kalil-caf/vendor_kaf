@@ -37,20 +37,20 @@
     <!-- If true, enable the advance anti-falsing classifier on the lockscreen. On some devices it
          does not work well, particularly with noisy touchscreens. Note that disabling it may
          increase the rate of unintentional unlocks. -->
-    <bool name="config_lockscreenAntiFalsingClassifierEnabled">false</bool>
+    <bool name="config_lockscreenAntiFalsingClassifierEnabled">true</bool>
 
     <!-- Keyguard emergency button -->
-    <bool name="kg_hide_emgcy_btn_when_oos">true</bool>
-    <bool name="config_showEmergencyButton">false</bool>
+    <bool name="kg_hide_emgcy_btn_when_oos">false</bool>
+    <bool name="config_showEmergencyButton">true</bool>
 
     <!-- config for showing AM/PM on lock screen in 12hour format -->
     <bool name="config_showAmpm">false</bool>
 
     <!-- Whether to show activity indicators in the status bar -->
-    <bool name="config_showActivity">false</bool>
+    <bool name="config_showActivity">true</bool>
 
     <!-- Whether to show wifi activity indicators in the status bar -->
-    <bool name="config_showWifiActivity">false</bool>
+    <bool name="config_showWifiActivity">true</bool>
 
     <!-- Smart replies in notifications: Whether we disable the feature unless the app targets P -->
     <bool name="config_smart_replies_in_notifications_requires_targeting_p">false</bool>
