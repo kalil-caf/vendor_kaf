@@ -110,7 +110,7 @@ function kafemote()
     project=${project%_default*}
     fi
 
-    git remote add kaf "https://github.com/Kalil-CAF/$project"
+    git remote add kaf "git@github.com:kalil-caf/$project"
     echo "Remote 'kaf' created"
 }
 
